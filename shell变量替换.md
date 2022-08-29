@@ -134,7 +134,7 @@ Hello word
 Hello Shell
 ```
 
-除了 `${variable:='default value'}` 外，还有 `${variable:-'default value'}`,`${variable:+'default value'}` 和 `${variable:？'default value'}`，它们有什么区别呢？
+除了 `${variable:='default value'}` 外，还有 `${variable:-'default value'}` , `${variable:+'default value'}` 和 `${variable:？'default value'}`，它们有什么区别呢？
 对于 `${variable:='default value'}` ，表示变量为空时把默认值赋值给该变量，例如：
 ```bash
 [Neptuneyt]$ net=
