@@ -100,7 +100,7 @@ wwwbaidu.com
 [Neptuneyt]$ echo ${net/.}  #最后一个/可以不用写
 wwwbaidu.com
 ```
-若要删除所有匹配到的只需即 `${variable//pattern}` ，例如将 `net` 的 `.` 都删除，只需
+若要删除所有匹配到的只需即 `${variable//pattern}`，例如将 `net` 的 `.` 都删除，只需
 ```
 [Neptuneyt]$ echo ${net//.}
 wwwbaiducom
@@ -135,7 +135,7 @@ Hello Shell
 ```
 
 除了 `${variable:='default value'}` 外，还有 `${variable:-'default value'}` , `${variable:+'default value'}` 和 `${variable:？'default value'}`，它们有什么区别呢？
-对于 `${variable:='default value'}` ，表示变量为空时把默认值赋值给该变量，例如：
+对于 `${variable:='default value'}`，表示变量为空时把默认值赋值给该变量，例如：
 ```bash
 [Neptuneyt]$ net=
 [Neptuneyt]$ echo ${net:='www.baidu.com'}
@@ -143,14 +143,14 @@ www.baidu.com
 [Neptuneyt]$ echo $net
 www.baidu.com
 ```
-对于 `${variable:-'default value'}` ,表示变量为空时返回默认值**但是并不把默认值赋值给该变量，** 例如：
+对于 `${variable:-'default value'}`，表示变量为空时返回默认值**但是并不把默认值赋值给该变量，** 例如：
 ```bash
 [Neptuneyt]$ net=
 [Neptuneyt]$ echo ${net:-'www.baidu.com'}
 www.baidu.com
 [Neptuneyt]$ echo $net  #此时，变量依旧为空
 ```
-对于 `${variable:+'default value'}`,则表示变量不为空时，返回默认值，并且也不重新赋值，例如：
+对于 `${variable:+'default value'}`，则表示变量不为空时，返回默认值，并且也不重新赋值，例如：
 ```bash
 [Neptuneyt]$ net=www.baidu.com
 [Neptuneyt]$ echo ${net:+'www.google.com'}
@@ -158,7 +158,7 @@ www.google.com
 [Neptuneyt]$ echo $net  #不改变变量原值
 www.baidu.com
 ```
-最后，对于 `${variable:？'default value'}`,则表示当变量为空时，使用bash风格的报错，例如：
+最后，对于 `${variable:？'default value'}`，则表示当变量为空时，使用bash风格的报错，例如：
 ```bash
 [Neptuneyt]$ net=
 [Neptuneyt]$ echo ${net:?'error:null value'}
