@@ -49,8 +49,8 @@ Runoob
 Tesetfile
 Wiki
 ```
-### 以行为单位的新增/删除
-将 testfile 的内容列出并且列印行号，同时，请将第 2~5 行删除！
+#### 以行为单位的新增/删除
+将 testfile 的内容列出并且列印行号，同时，请将第 2~5 行删除！代码中 `2,5` 表示 2-5 行，`d` 表示删除，注意 sed 后面接的动作必须置于单引号 `''` 中。另外代码中省略了参数 `-e` 也是可以的。
 ```bash
 $ nl testfile | sed '2,5d'
      1  HELLO LINUX!  
@@ -59,8 +59,6 @@ $ nl testfile | sed '2,5d'
      8  Tesetfile
      9  Wiki
 ```
-sed 的动作为 `2,5d`，那个 d 是删除的意思，因为删除了 2-5 行，所以显示的数据就没有 2-5 行了， 另外，原本应该是要下达 sed -e 才对，但没有 -e 也是可以的，同时也要注意的是， sed 后面接的动作，请务必以 `'...'` 两个单引号括住！
-
 只要删除第 2 行：
 ```bash
 $ nl testfile | sed '2d' 
@@ -79,7 +77,7 @@ $ nl testfile | sed '3,$d'
      1  HELLO LINUX!  
      2  Linux is a free unix-type opterating system.  
 ```
-在第二行后(即加在第三行) 加上drink tea? 字样：
+在第二行后(即加在原本的第二和第三行之间) 加上drink tea? 字样：
 ```bash
 $ nl testfile | sed '2a drink tea'
      1  HELLO LINUX!  
@@ -124,8 +122,11 @@ drink beer ?
      8  Tesetfile
      9  Wiki
 ```
-每一行之间都必须要以反斜杠 \ 来进行新行标记。上面的例子中，我们可以发现在第一行的最后面就有 \ 存在。
-### 以行为单位的替换与显示
+每一行之间都必须要以反斜杠 \ 来进行新行标记。上面的例子中，我们可以发现在第一行的最后面就有 \ 存在。也可以使用 `\n` 换行符，代码如下：
+```bash
+$ nl testfile | sed '2a Drink tea or ......\ndrink beer ?'
+```
+#### 以行为单位的替换与显示
 将第 2-5 行的内容取代成为 No 2-5 number 呢？
 ```bash
 $ nl testfile | sed '2,5c No 2-5 number'
@@ -146,7 +147,7 @@ $ nl testfile | sed -n '5,7p'
      7  Runoob
 ```
 可以透过这个 sed 的以行为单位的显示功能， 就能够将某一个文件内的某些行号选择出来显示。
-### 数据的搜寻并显示
+#### 数据的搜寻并显示
 搜索 testfile 有 `oo` 关键字的行：
 ```bash
 $ nl testfile | sed -n '/oo/p'
@@ -154,7 +155,7 @@ $ nl testfile | sed -n '/oo/p'
      7  Runoob
 ```
 如果 root 找到，除了输出所有行，还会输出匹配行。
-### 数据的搜寻并删除
+#### 数据的搜寻并删除
 删除 testfile 所有包含 `oo` 的行，其他行输出
 ```bash
 $ nl testfile | sed  '/oo/d'
@@ -166,14 +167,14 @@ $ nl testfile | sed  '/oo/d'
      8  Tesetfile
      9  Wiki
 ```
-### 数据的搜寻并执行命令
+#### 数据的搜寻并执行命令
 搜索 testfile，找到 `oo` 对应的行，执行后面花括号中的一组命令，每个命令之间用分号分隔，这里把 oo 替换为 kk，再输出这行：
 ```bash
 $ nl testfile | sed -n '/oo/{s/oo/kk/;p;q}'  
      5  Gkkgle
 ```
 最后的 `q` 是退出。
-### 数据的查找与替换
+#### 数据的查找与替换
 除了整行的处理模式之外， sed 还可以用行为单位进行部分数据的查找与替换<。
 
 sed 的查找与替换的与 vi 命令类似，语法格式如下：
@@ -219,7 +220,7 @@ $ /sbin/ifconfig eth0 | grep 'inet addr' | sed 's/^.*addr://g'
 $ /sbin/ifconfig eth0 | grep 'inet addr' | sed 's/^.*addr://g' | sed 's/Bcast.*$//g'
 192.168.1.100
 ```
-### 多点编辑
+#### 多点编辑
 一条 sed 命令，删除 testfile 第三行到末尾的数据，并把 HELLO 替换为 RUNOOB :
 ```bash
 $ nl testfile | sed -e '3,$d' -e 's/HELLO/RUNOOB/'
@@ -227,7 +228,7 @@ $ nl testfile | sed -e '3,$d' -e 's/HELLO/RUNOOB/'
      2  Linux is a free unix-type opterating system. 
 ```
 -e 表示多点编辑，第一个编辑命令删除 testfile 第三行到末尾的数据，第二条命令搜索 HELLO 替换为 RUNOOB。
-### 直接修改文件内容(危险动作)
+#### 直接修改文件内容(危险动作)
 sed 可以直接修改文件的内容，不必使用管道命令或数据流重导向！ 不过，由于这个动作会直接修改到原始的文件，所以请你千万不要随便拿系统配置来测试！ 我们还是使用文件 regular_express.txt 文件来测试看看吧！
 
 regular_express.txt 文件内容如下：
