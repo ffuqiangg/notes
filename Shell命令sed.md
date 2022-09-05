@@ -77,52 +77,31 @@ sed -n '5,7p' testfile
 #### 数据的搜寻并显示
 搜索 testfile 有 `oo` 关键字的行：
 ```bash
-$ nl testfile | sed -n '/oo/p'
-     5  Google
-     7  Runoob
+sed -n '/oo/p' testfile
 ```
-如果 root 找到，除了输出所有行，还会输出匹配行。
 #### 数据的搜寻并删除
 删除 testfile 所有包含 `oo` 的行，其他行输出
 ```bash
-$ nl testfile | sed  '/oo/d'
-     1  HELLO LINUX!  
-     2  Linux is a free unix-type opterating system.  
-     3  This is a linux testfile!  
-     4  Linux test 
-     6  Taobao
-     8  Tesetfile
-     9  Wiki
+sed '/oo/d' testfile
 ```
 #### 数据的搜寻并执行命令
-搜索 testfile，找到 `oo` 对应的行，执行后面花括号中的一组命令，每个命令之间用分号分隔，这里把 oo 替换为 kk，再输出这行：
+搜索 testfile，找到 `oo` 对应的行，执行后面花括号中的一组命令，每个命令之间用分号分隔，这里把 `oo`` 替换为 `kk`，再输出这行：
 ```bash
-$ nl testfile | sed -n '/oo/{s/oo/kk/;p;q}'  
-     5  Gkkgle
+cat testfile | sed -n '/oo/{s/oo/kk/;p;q}'
 ```
 最后的 `q` 是退出。
 #### 数据的查找与替换
-除了整行的处理模式之外， sed 还可以用行为单位进行部分数据的查找与替换<。
-
-sed 的查找与替换的与 vi 命令类似，语法格式如下：
+sed 的查找与替换的与 vi 命令类似，语法格式如下，其中命令 `g` 表示全局替换，如果没有该命令则仅替换第一个出现的字串：
 ```bash
 sed 's/要被取代的字串/新的字串/g'
 ```
-将 testfile 文件中每行第一次出现的 oo 用字符串 kk 替换，然后将该文件内容输出到标准输出：
-```bash
-sed -e 's/oo/kk/' testfile
-```
-`g` 标识符表示全局查找替换，使 sed 对文件中所有符合的字符串都被替换，修改后内容会到标准输出，不会修改原文件：
-```bash
-sed -e 's/oo/kk/g' testfile
-```
-选项 `i` 使 sed 修改文件:
+选项 `i` 使 sed 修改文件，没有参数 `i` 则仅打印处理后的结果而不修改源文件，文件名使用通配符可以同时对多个文件进行处理：
 ```bash
 sed -i 's/oo/kk/g' testfile
 ```
-批量操作当前目录下以 test 开头的文件：
+将命令中新字串部分留空即可实现删除源字串的效果：
 ```bash
-sed -i 's/oo/kk/g' ./test*
+sed -i 's/oo//g' testfile
 ```
 接下来我们使用 /sbin/ifconfig 查询 IP：
 ```bash
