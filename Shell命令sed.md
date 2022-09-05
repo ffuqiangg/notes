@@ -22,131 +22,58 @@ sed [-hnV][-e<script>][-f<script文件>][文本文件]
 | s    | 取代，可以直接进行取代的工作哩！通常这个 s 的动作可以搭配正则表达式！例如 1,20s/old/new/g 就是啦 |
 
 ## 实例
-我们先创建一个 testfile 文件，内容如下：
-```bash
-$ cat testfile #查看testfile 中的内容  
-HELLO LINUX!  
-Linux is a free unix-type opterating system.  
-This is a linux testfile!  
-Linux test 
-Google
-Taobao
-Runoob
-Tesetfile
-Wiki
-```
+#### 添加插入行
 在 testfile 文件的第四行后添加一行，并将结果输出到标准输出，命令如下：
 ```bash
 sed -e '4a\newLine' testfile 
-HELLO LINUX!  
-Linux is a free unix-type opterating system.  
-This is a linux testfile!  
-Linux test 
-newLine
-Google
-Taobao
-Runoob
-Tesetfile
-Wiki
+        ||   | \ 之后为要添加的内容
+        || a表示之后添加一行
+        | 4表示以第四行为坐标
 ```
-#### 以行为单位的新增/删除
-将 testfile 的内容列出并且列印行号，同时，请将第 2~5 行删除！代码中 `2,5` 表示 2-5 行，`d` 表示删除，注意 sed 后面接的动作必须置于单引号 `''` 中，但其中如果使用了变量则须将单引号替换为双引号 `""`。另外代码中省略了参数 `-e` 也是可以的。
+如果要在第四行之前添加行，修改代码 `a` 为 `i` 即可：
 ```bash
-$ nl testfile | sed '2,5d'
-     1  HELLO LINUX!  
-     6  Taobao
-     7  Runoob
-     8  Tesetfile
-     9  Wiki
-```
-只要删除第 2 行：
-```bash
-$ nl testfile | sed '2d' 
-     1  HELLO LINUX!  
-     3  This is a linux testfile!  
-     4  Linux test 
-     5  Google
-     6  Taobao
-     7  Runoob
-     8  Tesetfile
-     9  Wiki
-```
-要删除第 3 到最后一行：
-```bash
-$ nl testfile | sed '3,$d' 
-     1  HELLO LINUX!  
-     2  Linux is a free unix-type opterating system.  
-```
-在第二行后(即加在原本的第二和第三行之间) 加上drink tea? 字样：
-```bash
-$ nl testfile | sed '2a drink tea'
-     1  HELLO LINUX!  
-     2  Linux is a free unix-type opterating system.  
-drink tea
-     3  This is a linux testfile!  
-     4  Linux test 
-     5  Google
-     6  Taobao
-     7  Runoob
-     8  Tesetfile
-     9  Wiki
-```
-如果是要在第二行前，命令如下：
-```bash
-$ nl testfile | sed '2i drink tea' 
-     1  HELLO LINUX!  
-drink tea
-     2  Linux is a free unix-type opterating system.  
-     3  This is a linux testfile!  
-     4  Linux test 
-     5  Google
-     6  Taobao
-     7  Runoob
-     8  Tesetfile
-     9  Wiki
+sed -e '4i\newline' testfile
 ```
 如果是要增加两行以上，在第二行后面加入两行字，例如 Drink tea or ..... 与 drink beer?
 ```bash
-$ nl testfile | sed '2a Drink tea or ......\
-drink beer ?'
-
-1  HELLO LINUX!  
-     2  Linux is a free unix-type opterating system.  
-Drink tea or ......
-drink beer ?
-     3  This is a linux testfile!  
-     4  Linux test 
-     5  Google
-     6  Taobao
-     7  Runoob
-     8  Tesetfile
-     9  Wiki
+sed -e '2a Drink tea or ......\
+drink beer ?' testfile        | 行末的 \ 表示换行
 ```
-每一行之间都必须要以反斜杠 \ 来进行新行标记。上面的例子中，我们可以发现在第一行的最后面就有 \ 存在。也可以使用 `\n` 换行符，代码如下：
+另一种换行标记也可以使用 `\n` 换行符，代码如下：
 ```bash
-$ nl testfile | sed '2a Drink tea or ......\ndrink beer ?'
+sed -e '2a Drink tea or ......\ndrink beer ?'
+                               | \n 作为换行标记下一行内容无需换行书写
+```
+在上面的例子中，坐标行不一定为行号，也可以使用字符串定位
+```bash
+sed -e '/target/a\newline' testfile
+           | 表示文件中含 target 的行作为坐标
+```
+#### 删除行
+实际书写时 `-e` 是可以省略的，另外，如需在 `''` 范围内使用变量，必须将单引号 `''` 替换为双引号 `""`：
+```bash
+sed '2,5d' testfile
+     |  | d 表示删除
+     | 2,5 表示从第二行开始至第五行结束
+
+sed '2d' testfile
+     | 2d 表示单独删除第二行
+
+sed '3,$d' testfile
+     | 3,$ 表示从第三行开始至最后一行，$ 表示最后  
 ```
 #### 以行为单位的替换与显示
-将第 2-5 行的内容取代成为 No 2-5 number 呢？
+将第 2-5 行的内容取代成为 No 2-5 number：
 ```bash
-$ nl testfile | sed '2,5c No 2-5 number'
-     1  HELLO LINUX!  
-No 2-5 number
-     6  Taobao
-     7  Runoob
-     8  Tesetfile
-     9  Wiki
+sed '2,5c No 2-5 number' testfile
+      | |   | No 2-5 number 为替换内容
+      | | c 表示替换
+      | 2,5 表示替换目标为第二至第五行
 ```
-透过这个方法我们就能够将数据整行取代了。
-
 仅列出 testfile 文件内的第 5-7 行：
 ```bash
-$ nl testfile | sed -n '5,7p'
-     5  Google
-     6  Taobao
-     7  Runoob
+sed -n '5,7p' testfile
 ```
-可以透过这个 sed 的以行为单位的显示功能， 就能够将某一个文件内的某些行号选择出来显示。
 #### 数据的搜寻并显示
 搜索 testfile 有 `oo` 关键字的行：
 ```bash
