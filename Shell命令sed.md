@@ -117,6 +117,8 @@ UP BROADCAST RUNNING MULTICAST MTU:1500 Metric:1
 将 IP 前面的部分予以删除：
 ```bash
 $ /sbin/ifconfig eth0 | grep 'inet addr' | sed 's/^.*addr://g'
+                             |                    | 删除从行首至 addr: ，^ 表示行首，同通配符 * sed 中替换为 .*
+                             | grep 命令提取出包含 inet addr 的行
 192.168.1.100 Bcast:192.168.1.255 Mask:255.255.255.0
 ```
 接下来则是删除后续的部分，即：192.168.1.100 Bcast:192.168.1.255 Mask:255.255.255.0。
@@ -124,16 +126,15 @@ $ /sbin/ifconfig eth0 | grep 'inet addr' | sed 's/^.*addr://g'
 将 IP 后面的部分予以删除:
 ```bash
 $ /sbin/ifconfig eth0 | grep 'inet addr' | sed 's/^.*addr://g' | sed 's/Bcast.*$//g'
+                                                                           | $ 表示行尾
 192.168.1.100
 ```
 #### 多点编辑
 一条 sed 命令，删除 testfile 第三行到末尾的数据，并把 HELLO 替换为 RUNOOB :
 ```bash
-$ nl testfile | sed -e '3,$d' -e 's/HELLO/RUNOOB/'
-     1  RUNOOB LINUX!  
-     2  Linux is a free unix-type opterating system. 
+sed -e '3,$d' -e 's/HELLO/RUNOOB/' testfile
 ```
--e 表示多点编辑，第一个编辑命令删除 testfile 第三行到末尾的数据，第二条命令搜索 HELLO 替换为 RUNOOB。
+-e 表示多点编辑，此时 -e 不能省略
 #### 直接修改文件内容(危险动作)
 sed 可以直接修改文件的内容，不必使用管道命令或数据流重导向！ 不过，由于这个动作会直接修改到原始的文件，所以请你千万不要随便拿系统配置来测试！ 我们还是使用文件 regular_express.txt 文件来测试看看吧！
 
