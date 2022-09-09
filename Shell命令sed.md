@@ -117,7 +117,7 @@ UP BROADCAST RUNNING MULTICAST MTU:1500 Metric:1
 将 IP 前面的部分予以删除：
 ```bash
 $ /sbin/ifconfig eth0 | grep 'inet addr' | sed 's/^.*addr://g'
-                             |                    | 删除从行首至 addr: ，^ 表示行首，同通配符 * sed 中替换为 .*
+                             |                    | 删除从行首至 addr: ，^ 表示行首，通配符 * sed 中替换为 .*
                              | grep 命令提取出包含 inet addr 的行
 192.168.1.100 Bcast:192.168.1.255 Mask:255.255.255.0
 ```
@@ -136,39 +136,18 @@ sed -e '3,$d' -e 's/HELLO/RUNOOB/' testfile
 ```
 -e 表示多点编辑，此时 -e 不能省略
 #### 直接修改文件内容(危险动作)
-sed 可以直接修改文件的内容，不必使用管道命令或数据流重导向！ 不过，由于这个动作会直接修改到原始的文件，所以请你千万不要随便拿系统配置来测试！ 我们还是使用文件 regular_express.txt 文件来测试看看吧！
+sed 可以直接修改文件的内容，不必使用管道命令或数据流重导向！ 不过，由于这个动作会直接修改到原始的文件，所以请你千万不要随便拿系统配置来测试！ 
 
-regular_express.txt 文件内容如下：
+利用 sed 将 testfile 内每一行结尾若为 . 则换成 !
 ```bash
-$ cat regular_express.txt 
-runoob.
-google.
-taobao.
-facebook.
-zhihu-
-weibo-
+$ sed -i 's/\.$/\!/g' testfile
+          | 注意此处 . 和 ! 均添加 \ 转义
 ```
-利用 sed 将 regular_express.txt 内每一行结尾若为 . 则换成 !
+利用 sed 直接在 testfile 最后一行加入 # This is a test:
 ```bash
-$ sed -i 's/\.$/\!/g' regular_express.txt
-$ cat regular_express.txt 
-runoob!
-google!
-taobao!
-facebook!
-zhihu-
-weibo-
+$ sed -i '$a # This is a test' testfile
+           | $ 表示最后一行，a 表示在之后新增一行
 ```
-利用 sed 直接在 regular_express.txt 最后一行加入 # This is a test:
-```bash
-$ sed -i '$a # This is a test' regular_express.txt
-$ cat regular_express.txt 
-runoob!
-google!
-taobao!
-facebook!
-zhihu-
-weibo-
-# This is a test
-```
-由於 $ 代表的是最后一行，而 a 的动作是新增，因此该文件最后新增 # This is a test！
+
+## 其它
+在 `sed` 命令中匹配识 `/` 可以替换为其他字符如 `| # @`，且当使用其它字符作为标识时，`/` 不需要转义
