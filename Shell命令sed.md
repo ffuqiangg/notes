@@ -95,7 +95,7 @@ sed 的查找与替换的与 vi 命令类似，语法格式如下，其中命令
 ```bash
 sed 's/要被取代的字串/新的字串/g'
 ```
-选项 `i` 使 sed 修改文件，没有参数 `i` 则仅打印处理后的结果而不修改源文件，文件名使用通配符可以同时对多个文件进行处理：
+选项 `i` 使 sed 修改文件，没有参数 `i` 则仅打印处理后的结果而不修改源文件，文件名使用正则表达式可以同时对多个文件进行处理：
 ```bash
 sed -i 's/oo/kk/g' testfile
 ```
@@ -117,7 +117,7 @@ UP BROADCAST RUNNING MULTICAST MTU:1500 Metric:1
 将 IP 前面的部分予以删除：
 ```bash
 $ /sbin/ifconfig eth0 | grep 'inet addr' | sed 's/^.*addr://g'
-                             |                    | 删除从行首至 addr: ，^ 表示行首，通配符 * sed 中替换为 .*
+                             |                    | 删除从行首至 addr: ，^ 表示行首，正则表达式 .* 等同于通配符 *
                              | grep 命令提取出包含 inet addr 的行
 192.168.1.100 Bcast:192.168.1.255 Mask:255.255.255.0
 ```
