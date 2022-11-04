@@ -16,5 +16,5 @@ cat ~/.ssh/id_rsa.pub
 
 ## github 设置
 
-登录 github 进入账户`setting`页面，左侧导航进入`SSH and GPG keys`，点击右侧`New SSH keys`按钮添加 sshkey    
-`Title`任意命名 `Key`粘贴入前一步复制的内容 `Key type`保持默认，然后点击`Add SSH key`按钮完成设置。
+登录 github 进入账户 `setting` 页面，左侧导航进入 `SSH and GPG keys` ，点击右侧 `New SSH keys` 按钮添加 sshkey    
+`Title` 任意命名 `Key` 粘贴入前一步复制的内容 `Key type` 保持默认，然后点击 `Add SSH key` 按钮完成设置。
