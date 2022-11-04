@@ -1,9 +1,9 @@
 ### 一些 Sublime Text 4 的默认设置修改方法  
 选择菜单 `首选项` > `设置`，然后根据需要添加下面的代码
 
-1. 在 manjaro gnome 中修复标题栏高度  
+1. 在 gnome 中修复标题栏高度  
 `"gtk_client_side_window_decorations": false,`  
-2. 按下 tab 键缩进显示的宽度  
+2. tab 缩进显示的宽度  
 `"tab_size": 4,`  
 3. 将 tab 缩进转为空格缩进  
 `"translate_tabs_to_spaces": true,`  
