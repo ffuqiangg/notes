@@ -164,3 +164,10 @@ www.baidu.com
 [Neptuneyt]$ echo ${net:?'error:null value'}
 -bash: net: error:null value
 ```
+
+## 变量转数组
+```bash
+str="ONE,TWO,THREE,FOUR"
+IFS=","   #IFS设置分隔符
+arr=($str)
+```
