@@ -3,6 +3,9 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
+# Open in filebrowser
+alias open='xdg-open .'
+
 # Change directory aliases
 alias home='cd ~'
 alias cd..='cd ..'
