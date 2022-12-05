@@ -6,7 +6,9 @@ set softtabstop=4
 set number
 set cursorline
 set nowrap
-set sidescroll=1
+set sidescroll=
+set smartindent
+set smarttab
 
 " Auto ([{
 inoremap ' ''<ESC>i
@@ -14,6 +16,10 @@ inoremap " ""<ESC>i
 inoremap ( ()<ESC>i
 inoremap [ []<ESC>i
 inoremap { {}<ESC>i
+
+" yaml file settting
+filetype on
+autocmd Filetype yaml setlocal tabstop=2 shiftwidth=2 softtabstop=2
 
 " Normal ❚ Insert |
 if has("autocmd")
