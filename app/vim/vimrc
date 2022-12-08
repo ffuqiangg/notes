@@ -15,7 +15,7 @@ inoremap ' ''<ESC>i
 inoremap " ""<ESC>i
 inoremap ( ()<ESC>i
 inoremap [ []<ESC>i
-inoremap { {}<ESC>i
+inoremap { {<CR>}<ESC>O
 
 " yaml file settting
 filetype on
