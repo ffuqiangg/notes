@@ -21,7 +21,7 @@ inoremap { {}<ESC>i
 filetype on
 autocmd Filetype yaml setlocal tabstop=2 shiftwidth=2 softtabstop=2
 
-" Normal ❚ Insert |
+" Gnome3 Normal ❚ Insert |
 if has("autocmd")
   au VimEnter,InsertLeave * silent execute '!echo -ne "\e[2 q"' | redraw!
   au InsertEnter,InsertChange *
@@ -31,4 +31,11 @@ if has("autocmd")
     \   silent execute '!echo -ne "\e[4 q"' | redraw! |
     \ endif
   au VimLeave * silent execute '!echo -ne "\e[ q"' | redraw!
+endif
+
+" Windows Terminal wsl2 Normal ❚ Insert |
+if &term =~ "xterm"
+    let &t_SI = "\<Esc>[6 q"
+    let &t_SR = "\<Esc>[3 q"
+    let &t_EI = "\<Esc>[2 q"
 endif
