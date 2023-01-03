@@ -9,6 +9,7 @@ set nowrap
 set sidescroll=1
 set smartindent
 set smarttab
+set laststatus=2
 
 " Auto ([{
 inoremap ' ''<ESC>i
