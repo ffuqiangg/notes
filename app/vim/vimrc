@@ -10,9 +10,9 @@ syntax on
 
 " 主题设置
 colorscheme molokai
-hi Normal ctermbg=none
-hi Visual ctermbg=152 ctermfg=black
-hi LineNr ctermbg=none ctermfg=238
+hi Normal ctermbg=none                   " 背景透明
+hi Visual ctermbg=152 ctermfg=black      " VISUAL模式选择背景色
+hi LineNr ctermbg=none ctermfg=238       " 行号区域设置
 
 " HL 行首行尾
 noremap H ^
