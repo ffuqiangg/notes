@@ -1,28 +1,50 @@
+" 插件设置
+set nocompatible
+call plug#begin()
+Plug 'sheerun/vim-polyglot'          " 语法高亮
+call plug#end()
+
+" 语法高亮开关
+syntax enable
+syntax on
+
+" 主题设置
+colorscheme molokai
+hi Normal ctermbg=none
+hi Visual ctermbg=152 ctermfg=black
+hi LineNr ctermbg=none ctermfg=238
+
+" HL 行首行尾
+noremap H ^
+noremap L $
+
+" 缩进设置
 set autoindent
 set tabstop=4
 set shiftwidth=4
 set expandtab
 set softtabstop=4
-set number
-set cursorline
-set nowrap
-set sidescroll=1
 set smartindent
 set smarttab
-set laststatus=2
 
-" Auto ([{
-inoremap ' ''<ESC>i
-inoremap " ""<ESC>i
-inoremap ( ()<ESC>i
-inoremap [ []<ESC>i
-inoremap { {<CR>}<ESC>O
-
-" yaml file settting
+" 指定语言独立设置
 filetype on
 autocmd Filetype yaml setlocal tabstop=2 shiftwidth=2 softtabstop=2
 
-" Gnome3 Normal ❚ Insert |
+" 行设置
+set number
+set nowrap
+set sidescroll=1
+set cursorline
+
+" 类neovim 光标效果 (wsl)
+if &term =~ "xterm"
+    let &t_SI = "\<Esc>[6 q"
+    let &t_SR = "\<Esc>[3 q"
+    let &t_EI = "\<Esc>[2 q"
+endif
+
+" 类neovim 光标效果 (Gnome3+)
 if has("autocmd")
   au VimEnter,InsertLeave * silent execute '!echo -ne "\e[2 q"' | redraw!
   au InsertEnter,InsertChange *
@@ -34,9 +56,12 @@ if has("autocmd")
   au VimLeave * silent execute '!echo -ne "\e[ q"' | redraw!
 endif
 
-" Windows Terminal wsl2 Normal ❚ Insert |
-if &term =~ "xterm"
-    let &t_SI = "\<Esc>[6 q"
-    let &t_SR = "\<Esc>[3 q"
-    let &t_EI = "\<Esc>[2 q"
-endif
+" 状态栏设置
+set laststatus=2
+set statusline=
+set statusline+=\ %F%m%r%h%w              " 文件名带路径
+set statusline+=%=                        " 左右对齐分割
+set statusline+=%-010.10(%{&ff}%)         " 文件格式
+set statusline+=%-013.13(%l,%c%)          " 光标位置
+set statusline+=%4P\                      " 文件中光标前的%
+hi statusline ctermfg=66 ctermbg=black    " 背景色
