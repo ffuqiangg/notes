@@ -156,4 +156,4 @@ require('nvim-treesitter.configs').setup {
 -- Configure Autopairs
 require('nvim-autopairs').setup({
     disable_filetype = { "TelescopePrompt" , "vim" },
-  })
+})
