@@ -17,6 +17,10 @@ require('packer').startup(function(use)
     -- Git related plugins
     use 'navarasu/onedark.nvim' -- Theme inspired by Atom
     use 'nvim-lualine/lualine.nvim' -- Fancier statusline
+    use { -- Autopairs
+	"windwp/nvim-autopairs",
+    config = function() require("nvim-autopairs").setup {} end
+    }
 end)
 
 -- [[ Setting options ]]
@@ -148,3 +152,8 @@ require('nvim-treesitter.configs').setup {
         },
     },
 }
+
+-- Configure Autopairs
+require('nvim-autopairs').setup({
+    disable_filetype = { "TelescopePrompt" , "vim" },
+  })
