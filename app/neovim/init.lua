@@ -1,162 +1,207 @@
--- Install Packer
--- Linux: git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/start/packer.nvim
--- Windows Powershell: git clone https://github.com/wbthomason/packer.nvim "$env:LOCALAPPDATA\nvim-data\site\pack\packer\start\packer.nvim"
+-- Install packer
+local install_path = vim.fn.stdpath 'data' .. '/site/pack/packer/start/packer.nvim'
+local is_bootstrap = false
+if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
+  is_bootstrap = true
+  vim.fn.system { 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path }
+  vim.cmd [[packadd packer.nvim]]
+end
+
 require('packer').startup(function(use)
-    -- Package manager
-    use 'wbthomason/packer.nvim'
+  -- Package manager
+  use 'wbthomason/packer.nvim'
 
-    use { -- Highlight, edit, and navigate code
-        'nvim-treesitter/nvim-treesitter',
-        run = function()
-         pcall(require('nvim-treesitter.install').update { with_sync = true })
-        end,
-    }
+  use { -- Highlight, edit, and navigate code
+    'nvim-treesitter/nvim-treesitter',
+    run = function()
+      pcall(require('nvim-treesitter.install').update { with_sync = true })
+    end,
+  }
 
-    use { -- Additional text objects via treesitter
-        'nvim-treesitter/nvim-treesitter-textobjects',
-        after = 'nvim-treesitter',
-    }
+  use { -- Additional text objects via treesitter
+    'nvim-treesitter/nvim-treesitter-textobjects',
+    after = 'nvim-treesitter',
+  }
 
-    -- Git related plugins
-    use 'navarasu/onedark.nvim' -- Theme inspired by Atom
-    use 'nvim-lualine/lualine.nvim' -- Fancier statusline
-    use { -- Autopairs
-	"windwp/nvim-autopairs",
-    config = function() require("nvim-autopairs").setup {} end
-    }
+  use 'navarasu/onedark.nvim' -- Theme inspired by Atom
+  use 'nvim-lualine/lualine.nvim' -- Fancier statusline
+  use 'numToStr/Comment.nvim' -- "gc" to comment visual regions/lines
+
+  -- Add custom plugins to packer from ~/.config/nvim/lua/custom/plugins.lua
+  local has_plugins, plugins = pcall(require, 'custom.plugins')
+  if has_plugins then
+    plugins(use)
+  end
+
+  if is_bootstrap then
+    require('packer').sync()
+  end
 end)
+
+-- When we are bootstrapping a configuration, it doesn't
+-- make sense to execute the rest of the init.lua.
+--
+-- You'll need to restart nvim, and then it will work.
+if is_bootstrap then
+  print '=================================='
+  print '    Plugins are being installed'
+  print '    Wait until Packer completes,'
+  print '       then restart nvim'
+  print '=================================='
+  return
+end
+
+-- Automatically source and re-compile packer whenever you save this init.lua
+local packer_group = vim.api.nvim_create_augroup('Packer', { clear = true })
+vim.api.nvim_create_autocmd('BufWritePost', {
+  command = 'source <afile> | silent! LspStop | silent! LspStart | PackerCompile',
+  group = packer_group,
+  pattern = vim.fn.expand '$MYVIMRC',
+})
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
+vim.wo.wrap = false
 
--- utf8
-vim.g.encoding = "UTF-8"
-vim.o.fileencoding = "utf-8"
-
--- 搜索高亮
+-- Set highlight on search
+vim.o.incsearch = true
 vim.o.hlsearch = false
 
--- 显示行号
+-- Make line numbers default
 vim.wo.number = true
 
--- 缩进4个空格等于一个Tab
-vim.o.tabstop = 4
-vim.bo.tabstop = 4
-vim.o.softtabstop = 4 
-vim.o.shiftround = true
+-- Enable mouse mode
+vim.o.mouse = 'a'
 
--- >> << 时移动长度
-vim.o.shiftwidth = 4
-vim.bo.shiftwidth = 4
+-- Enable break indent
+vim.o.breakindent = true
 
--- 空格替代tab
-vim.o.expandtab = true
-vim.bo.expandtab = true
+-- Save undo history
+vim.o.undofile = true
 
--- 新行对齐当前行
-vim.o.autoindent = true
-vim.bo.autoindent = true
-vim.o.smartindent = true
-
--- 搜索大小写不敏感，除非包含大写
+-- Case insensitive searching UNLESS /C or capital in search
 vim.o.ignorecase = true
 vim.o.smartcase = true
 
--- 高亮所在行
-vim.wo.cursorline = true
-
--- 边输入边搜索
-vim.o.incsearch = true
-
--- 禁止折行
-vim.wo.wrap = false
+-- Decrease update time
+vim.o.updatetime = 250
+vim.wo.signcolumn = 'yes'
 
 -- Set colorscheme
 vim.o.termguicolors = true
 vim.cmd [[colorscheme onedark]]
 
--- 光标在行首尾时<Left><Right>可以跳到下一行
-vim.o.whichwrap = "<,>,[,]"
+-- Set completeopt to have a better completion experience
+vim.o.completeopt = 'menuone,noselect'
 
--- H,L 跳到行首,行尾
-vim.keymap.set('n', 'H', '^', { silent = true })
-vim.keymap.set('n', 'L', '$', { silent = true })
+-- [[ Basic Keymaps ]]
+-- Set <space> as the leader key
+-- See `:help mapleader`
+--  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
+
+-- Keymaps for better default experience
+-- See `:help vim.keymap.set()`
+vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+
+-- Remap for dealing with word wrap
+vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+
+-- [[ Highlight on yank ]]
+-- See `:help vim.highlight.on_yank()`
+local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
+vim.api.nvim_create_autocmd('TextYankPost', {
+  callback = function()
+    vim.highlight.on_yank()
+  end,
+  group = highlight_group,
+  pattern = '*',
+})
 
 -- Set lualine as statusline
 -- See `:help lualine.txt`
 require('lualine').setup {
-    options = {
-        icons_enabled = false,
-        theme = 'onedark',
-        component_separators = '|',
-        section_separators = '',
-    },
+  options = {
+    icons_enabled = false,
+    theme = 'onedark',
+    component_separators = '|',
+    section_separators = '',
+  },
 }
+
+-- Enable Comment.nvim
+require('Comment').setup()
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
 require('nvim-treesitter.configs').setup {
-    -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'help', 'vim', 'python', 'json', 'bash' },
+  -- Add languages to be installed here that you want installed for treesitter
+  ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'help', 'vim' },
 
-    highlight = { enable = true },
-    indent = { enable = true, disable = { 'python' } },
-    incremental_selection = {
-        enable = true,
-        keymaps = {
-            init_selection = '<c-space>',
-            node_incremental = '<c-space>',
-            scope_incremental = '<c-s>',
-            node_decremental = '<c-backspace>',
-        },
+  highlight = { enable = true },
+  indent = { enable = true, disable = { 'python' } },
+  incremental_selection = {
+    enable = true,
+    keymaps = {
+      init_selection = '<c-space>',
+      node_incremental = '<c-space>',
+      scope_incremental = '<c-s>',
+      node_decremental = '<c-backspace>',
     },
-    textobjects = {
-        select = {
-            enable = true,
-            lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
-            keymaps = {
-                -- You can use the capture groups defined in textobjects.scm
-                ['aa'] = '@parameter.outer',
-                ['ia'] = '@parameter.inner',
-                ['af'] = '@function.outer',
-                ['if'] = '@function.inner',
-                ['ac'] = '@class.outer',
-                ['ic'] = '@class.inner',
-            },
-        },
-        move = {
-            enable = true,
-            set_jumps = true, -- whether to set jumps in the jumplist
-            goto_next_start = {
-                [']m'] = '@function.outer',
-                [']]'] = '@class.outer',
-            },
-            goto_next_end = {
-                [']M'] = '@function.outer',
-                [']['] = '@class.outer',
-            },
-            goto_previous_start = {
-                ['[m'] = '@function.outer',
-                ['[['] = '@class.outer',
-            },
-            goto_previous_end = {
-                ['[M'] = '@function.outer',
-                ['[]'] = '@class.outer',
-            },
-        },
-        swap = {
-            enable = true,
-            swap_next = {
-                ['<leader>a'] = '@parameter.inner',
-            },
-            swap_previous = {
-                ['<leader>A'] = '@parameter.inner',
-            },
-        },
+  },
+  textobjects = {
+    select = {
+      enable = true,
+      lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
+      keymaps = {
+        -- You can use the capture groups defined in textobjects.scm
+        ['aa'] = '@parameter.outer',
+        ['ia'] = '@parameter.inner',
+        ['af'] = '@function.outer',
+        ['if'] = '@function.inner',
+        ['ac'] = '@class.outer',
+        ['ic'] = '@class.inner',
+      },
     },
+    move = {
+      enable = true,
+      set_jumps = true, -- whether to set jumps in the jumplist
+      goto_next_start = {
+        [']m'] = '@function.outer',
+        [']]'] = '@class.outer',
+      },
+      goto_next_end = {
+        [']M'] = '@function.outer',
+        [']['] = '@class.outer',
+      },
+      goto_previous_start = {
+        ['[m'] = '@function.outer',
+        ['[['] = '@class.outer',
+      },
+      goto_previous_end = {
+        ['[M'] = '@function.outer',
+        ['[]'] = '@class.outer',
+      },
+    },
+    swap = {
+      enable = true,
+      swap_next = {
+        ['<leader>a'] = '@parameter.inner',
+      },
+      swap_previous = {
+        ['<leader>A'] = '@parameter.inner',
+      },
+    },
+  },
 }
 
--- Configure Autopairs
-require('nvim-autopairs').setup({
-    disable_filetype = { "TelescopePrompt" , "vim" },
-})
+-- Diagnostic keymaps
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
+vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)
+vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist)
+
+-- The line beneath this is called `modeline`. See `:help modeline`
+-- vim: ts=2 sts=2 sw=2 et
