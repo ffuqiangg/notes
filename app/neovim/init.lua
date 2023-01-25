@@ -23,6 +23,11 @@ require('packer').startup(function(use)
     after = 'nvim-treesitter',
   }
 
+  use { -- Autopairs
+    "windwp/nvim-autopairs",
+      config = function() require("nvim-autopairs").setup {} end
+  }
+
   use 'navarasu/onedark.nvim' -- Theme inspired by Atom
   use 'nvim-lualine/lualine.nvim' -- Fancier statusline
   use 'numToStr/Comment.nvim' -- "gc" to comment visual regions/lines
@@ -196,6 +201,11 @@ require('nvim-treesitter.configs').setup {
     },
   },
 }
+
+-- Configure autopairs
+require('nvim-autopairs').setup({
+  disable_filetype = { "TelescopePrompt" , "vim" },
+})
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
