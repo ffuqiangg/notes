@@ -1,89 +1,62 @@
-" Plugins
+set showcmd
+set showmatch
 set nocompatible
-call plug#begin()
-" Syntax highlight
-Plug 'sheerun/vim-polyglot'
+set backspace=indent,eol,start
+set textwidth=0
+set ruler
+set number
 
-" Colorscheme
-Plug 'joshdick/onedark.vim'
+" Wrap config
+set nowrap
+set sidescroll=1
 
-" Statusline
-Plug 'itchyny/lightline.vim'
-call plug#end()
+" Error bell
+set novisualbell
+set noerrorbells
 
-"Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
-"If you're using tmux version 2.2 or later, you can remove the outermost $TMUX check and use tmux's 24-bit color support
-"(see < http://sunaku.github.io/tmux-24bit-color.html#usage > for more information.)
-if (empty($TMUX))
-  if (has("nvim"))
-    "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
-    let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-  endif
-  "For Neovim > 0.1.5 and Vim > patch 7.4.1799 < https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162 >
-  "Based on Vim patch 7.4.1770 (`guicolors` option) < https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd >
-  " < https://github.com/neovim/neovim/wiki/Following-HEAD#20160511 >
-  if (has("termguicolors"))
-    set termguicolors
-  endif
-endif
+" Search config
+set hlsearch
+set incsearch
+set noignorecase
+set smartcase
 
-" Colorscheme (onedark) config supports italics
-let g:onedark_terminal_italics = 1
-
-" 语法高亮开关
-syntax enable
-syntax on
-
-" Highlight
-colorscheme onedark
-
-" Transparent background
-hi Normal ctermbg=none
-
-" HL 行首行尾
-noremap H ^
-noremap L $
-
-" 缩进设置
+" Indent config
+set autoindent
+set smartindent
 set autoindent
 set tabstop=4
 set shiftwidth=4
 set expandtab
 set softtabstop=4
-set smartindent
-set smarttab
+set shiftround
 
-" 指定语言独立设置
-filetype on
-autocmd Filetype yaml setlocal tabstop=2 shiftwidth=2 softtabstop=2
-
-" 行设置
-set number
-set nowrap
-set sidescroll=1
-set cursorline
-
-" 类neovim 光标效果 (wsl)
-if &term =~ "xterm"
-    let &t_SI = "\<Esc>[6 q"
-    let &t_SR = "\<Esc>[3 q"
-    let &t_EI = "\<Esc>[2 q"
+if &term == "xterm"
+    if has("terminfo")
+        set t_Co=8
+        set t_Sf=^[[3%p1%dm
+        set t_Sb=^[[4%p1%dm
+    else
+        set t_Co=8
+        set t_Sf=^[[3%dm
+        set t_Sb=^[[4%dm
+    endif
 endif
 
-" 类neovim 光标效果 (Gnome3+)
-if has("autocmd")
-  au VimEnter,InsertLeave * silent execute '!echo -ne "\e[2 q"' | redraw!
-  au InsertEnter,InsertChange *
-    \ if v:insertmode == 'i' |
-    \   silent execute '!echo -ne "\e[6 q"' | redraw! |
-    \ elseif v:insertmode == 'r' |
-    \   silent execute '!echo -ne "\e[4 q"' | redraw! |
-    \ endif
-  au VimLeave * silent execute '!echo -ne "\e[ q"' | redraw!
-endif
+" Remap move cursor
+nnoremap <C-H> ^
+nnoremap <C-L> $
+nnoremap <C-J> <C-d>
+nnoremap <C-K> <C-u>
 
-" Plugins lightline config
-set laststatus=2
-let g:lightline = {
-      \ 'colorscheme': 'one',
-      \ }
+syntax on  " Syntax highlight
+
+" Specify file config
+filetype plugin indent on
+autocmd Filetype yaml set tabstop=2 shiftwidth=2 softtabstop=2
+
+" Theme
+set t_Co=256
+colorscheme desert
+hi Normal ctermbg=none
+hi LineNr ctermfg=246 ctermbg=none
+hi Comment ctermfg=241
