@@ -67,6 +67,7 @@ vim.api.nvim_create_autocmd('BufWritePost', {
 -- [[ Setting options ]]
 -- See `:help vim.o`
 vim.wo.wrap = false
+vim.opt.linebreak = true
 
 -- Set highlight on search
 vim.o.incsearch = true
