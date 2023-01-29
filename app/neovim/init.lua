@@ -88,6 +88,19 @@ vim.o.undofile = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
 
+-- Indent config
+vim.o.tabstop = 4
+vim.bo.tabstop = 4
+vim.o.softtabstop = 4
+vim.o.shiftround = true
+vim.o.shiftwidth = 4
+vim.bo.shiftwidth = 4
+vim.o.expandtab = true
+vim.bo.expandtab = true
+vim.o.autoindent = true
+vim.bo.autoindent = true
+vim.o.smartindent = true
+
 -- Decrease update time
 vim.o.updatetime = 250
 vim.wo.signcolumn = 'yes'
