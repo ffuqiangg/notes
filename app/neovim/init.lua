@@ -72,6 +72,8 @@ vim.opt.linebreak = true
 -- Set highlight on search
 vim.opt.incsearch = true
 vim.opt.hlsearch = true
+vim.opt.ignorecase = false
+vim.opt.smartcase = true
 
 -- Disable mouse mode
 vim.opt.mouse = ''
