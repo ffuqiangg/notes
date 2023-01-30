@@ -66,52 +66,51 @@ vim.api.nvim_create_autocmd('BufWritePost', {
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
-vim.wo.wrap = false
+vim.opt.wrap = false
 vim.opt.linebreak = true
 
 -- Set highlight on search
-vim.o.incsearch = true
-vim.o.hlsearch = false
+vim.opt.incsearch = true
+vim.opt.hlsearch = false
+
+-- Disable mouse mode
+vim.opt.mouse = ''
 
 -- Make line numbers default
-vim.wo.number = true
+vim.opt.number = true
 
 -- Highlight cursorline
-vim.wo.cursorline = true
+vim.opt.cursorline = true
 
 -- Enable break indent
-vim.o.breakindent = true
+vim.opt.breakindent = true
 
 -- Save undo history
-vim.o.undofile = true
+vim.opt.undofile = true
 
 -- Case insensitive searching UNLESS /C or capital in search
-vim.o.ignorecase = true
-vim.o.smartcase = true
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
 
 -- Indent config
-vim.o.tabstop = 4
-vim.bo.tabstop = 4
-vim.o.softtabstop = 4
-vim.o.shiftround = true
-vim.o.shiftwidth = 4
-vim.bo.shiftwidth = 4
-vim.o.expandtab = true
-vim.bo.expandtab = true
-vim.o.autoindent = true
-vim.bo.autoindent = true
-vim.o.smartindent = true
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+vim.opt.shiftround = true
+vim.opt.shiftwidth = 4
+vim.opt.expandtab = true
+vim.opt.autoindent = true
+vim.opt.smartindent = true
 
 -- Decrease update time
-vim.o.updatetime = 250
-vim.wo.signcolumn = 'yes'
+vim.opt.updatetime = 250
+vim.opt.signcolumn = 'yes'
 
 -- Set colorscheme
-vim.o.termguicolors = true
+vim.opt.termguicolors = true
 vim.cmd [[colorscheme onedark]]
 
 -- Set completeopt to have a better completion experience
-vim.o.completeopt = 'menuone,noselect'
+vim.opt.completeopt = 'menuone,noselect'
 
 -- [[ Basic Keymaps ]]
 -- Set <space> as the leader key
@@ -123,12 +122,6 @@ vim.g.maplocalleader = ' '
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
-
--- Remap for move corsor
-vim.keymap.set('n', '<C-H>', '^', { silent = true })
-vim.keymap.set('n', '<C-L>', '$', { silent = true })
-vim.keymap.set('n', '<C-J>', '<C-D>', { silent = true })
-vim.keymap.set('n', '<C-k>', '<C-U>', { silent = true })
 
 -- Remap for dealing with word wrap
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
@@ -163,7 +156,7 @@ require('Comment').setup()
 -- See `:help nvim-treesitter`
 require('nvim-treesitter.configs').setup {
   -- Add languages to be installed here that you want installed for treesitter
-  ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'help', 'vim', 'yaml', 'bash' },
+  ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'typescript', 'help', 'vim', 'bash', 'yaml' },
 
   highlight = { enable = true },
   indent = { enable = true, disable = { 'python' } },
