@@ -46,10 +46,13 @@ filetype plugin indent on
 autocmd Filetype yaml set tabstop=2 shiftwidth=2 softtabstop=2
 
 " Theme
-" set t_Co=256
 set termguicolors
 colorscheme yowish
 hi Normal guibg=NONE ctermbg=none
 hi CursorLine guibg=#31353F
 hi LineNr guifg=#949494 ctermfg=246
-" hi Comment ctermfg=241
+" set t_Co=256
+" colorscheme yowish
+" hi LineNr ctermfg=246
+" hi Comment cterm=italic
+" hi SpecialKey ctermfg=242
