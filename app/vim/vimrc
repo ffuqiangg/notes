@@ -40,13 +40,13 @@ if &term == "xterm"
 endif
 
 syntax on                         " turn syntax highlighting on by default
+set laststatus=2                  " always display statusline
 
 " Specify file config
 filetype plugin indent on
 autocmd Filetype yaml set tabstop=2 shiftwidth=2 softtabstop=2
 
 " Theme
-" set t_Co=256
 set termguicolors
 colorscheme yowish
 hi Normal guibg=NONE ctermbg=none
@@ -57,5 +57,3 @@ hi TabLineFill guibg=#393939
 hi TabLineSel guibg=#bebebe guifg=#393939 gui=bold
 hi Comment cterm=italic gui=italic
 hi StatusLine guifg=#abb2bf guibg=#393f4a
-
-set laststatus=2
