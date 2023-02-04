@@ -56,3 +56,6 @@ hi SpecialKey guifg=#6e6e6e ctermfg=242
 hi TabLineFill guibg=#393939
 hi TabLineSel guibg=#bebebe guifg=#393939 gui=bold
 hi Comment cterm=italic gui=italic
+hi StatusLine guifg=#abb2bf guibg=#393f4a
+
+set laststatus=2
