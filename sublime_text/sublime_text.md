@@ -15,8 +15,8 @@
 `"font_size": 11,`  
 7. 设置字体  
 `"font_face": "Fira Code",` 
-   取消斜体
-·“font_options": ["no_italic"],`
+   取消斜体  
+`“font_options": ["no_italic"],`
 8. 自动换行，如果取值 auto 需要加双引号  
 `"word_wrap": true,`  
 9. 调整行高，上下行距单位像素  
