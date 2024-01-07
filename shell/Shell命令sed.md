@@ -89,6 +89,11 @@ sed '/oo/d' testfile
 ```bash
 cat testfile | sed -n '/oo/{s/oo/kk/;p;q}'
 ```
+搜索 testfile，找到 `oo` 对应的行，把第二行/第三行 `oo` 替换为 `kk`
+```bash
+cat testfile | sed '/oo/{n;s/oo/kk/;}'
+cat testfile | sed '/oo/{n;n;s/oo/kk/;}'
+```
 最后的 `q` 是退出。  
 搜索 testfile，找到 `oo` 对应的行，删除该行及后续的 3 行：
 ```bash
